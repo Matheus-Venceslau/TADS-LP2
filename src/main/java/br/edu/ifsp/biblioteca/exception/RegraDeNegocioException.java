@@ -1,7 +1,7 @@
 package br.edu.ifsp.biblioteca.exception;
 
-public class ErroCadastroException extends RuntimeException{
-    public ErroCadastroException(String mensagem){
+public class RegraDeNegocioException extends RuntimeException{
+    public RegraDeNegocioException(String mensagem){
         super(mensagem);
     }
 
