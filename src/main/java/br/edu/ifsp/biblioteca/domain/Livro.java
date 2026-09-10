@@ -1,7 +1,5 @@
 package br.edu.ifsp.biblioteca.domain;
 
-import jdk.internal.editor.external.ExternalEditor;
-
 import java.util.ArrayList;
 import java.util.List;
 
