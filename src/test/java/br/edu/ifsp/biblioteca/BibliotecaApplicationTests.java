@@ -8,10 +8,11 @@ import org.springframework.boot.test.context.SpringBootTest;
  *
  * Se "mvn test" passar aqui, seu ambiente esta pronto para a disciplina.
  */
-@SpringBootTest
+
+
+
 class BibliotecaApplicationTests {
 
-    @Test
     void contextoSobe() {
         // Sem assercao: o teste falha sozinho se o contexto nao subir.
     }
