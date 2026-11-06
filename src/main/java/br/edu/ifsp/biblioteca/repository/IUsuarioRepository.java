@@ -6,11 +6,12 @@ import java.util.List;
 import java.util.Optional;
 
 public interface IUsuarioRepository {
-        Usuario salvar(Usuario usuario);
 
-        Optional<Usuario> buscarPorId(Long id);
-        Optional<Usuario> buscarPorEmail(String email);
+    Usuario salvar(Usuario usuario);
 
-        List<Usuario> listarTodos();
+    Optional<Usuario> buscarPorId(Long id);
 
+    Optional<Usuario> buscarPorEmail(String email);
+
+    List<Usuario> listarTodos();
 }

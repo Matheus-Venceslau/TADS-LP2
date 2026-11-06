@@ -1,6 +1,7 @@
 package br.edu.ifsp.biblioteca.domain;
 
 public class Usuario {
+
     private Long id;
     private String nome;
     private String email;

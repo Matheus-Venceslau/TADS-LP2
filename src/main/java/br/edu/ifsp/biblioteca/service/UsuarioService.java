@@ -10,19 +10,21 @@ import java.util.Optional;
 
 @Service
 public class UsuarioService {
+
     private final IUsuarioRepository usuarioRepository;
 
-    public UsuarioService(IUsuarioRepository repository){
+    public UsuarioService(IUsuarioRepository repository) {
         this.usuarioRepository = repository;
     }
 
-    public Usuario cadastrar(Usuario usuario){
-        if (usuario.getNome() == null || usuario.getNome().isEmpty()){
-            throw new RegraDeNegocioException("Nome é obrigatorio");
+    public Usuario cadastrar(Usuario usuario) {
+
+        if (usuario.getNome() == null || usuario.getNome().isEmpty()) {
+            throw new RegraDeNegocioException("Nome é obrigatório");
         }
 
-        if (usuario.getEmail() == null || usuario.getEmail().isEmpty()){
-            throw new RegraDeNegocioException("E-mail é obrigatorio");
+        if (usuario.getEmail() == null || usuario.getEmail().isEmpty()) {
+            throw new RegraDeNegocioException("E-mail é obrigatório");
         }
 
         this.validarEmail(usuario.getEmail());
@@ -30,25 +32,28 @@ public class UsuarioService {
         return this.usuarioRepository.salvar(usuario);
     }
 
-    public Usuario buscarPorId(Long id){
+    public Usuario buscarPorId(Long id) {
+
         Optional<Usuario> usuarioOptional = this.usuarioRepository.buscarPorId(id);
 
-        if (usuarioOptional.isPresent()){
+        if (usuarioOptional.isPresent()) {
             return usuarioOptional.get();
         }
 
-        throw new RegraDeNegocioException("Usuario não encontrado: " + id);
+        throw new RegraDeNegocioException("Usuário não encontrado: " + id);
     }
 
-    public void validarEmail(String email){
+    private void validarEmail(String email) {
         Optional<Usuario> usuarioOptional = this.usuarioRepository.buscarPorEmail(email);
 
-        if (usuarioOptional.isPresent()){
-            throw new RegraDeNegocioException("Já existe um usuario cadastrado com o email: " + email);
+        if (usuarioOptional.isPresent()) {
+            throw new RegraDeNegocioException(
+                    "Já existe um usuário cadastrado com o e-mail: " + email
+            );
         }
     }
 
-    public List<Usuario> listarTodos(){
+    public List<Usuario> listarTodos() {
         return this.usuarioRepository.listarTodos();
     }
 }

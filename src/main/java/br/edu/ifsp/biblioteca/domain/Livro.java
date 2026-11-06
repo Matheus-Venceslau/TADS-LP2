@@ -1,69 +1,89 @@
 package br.edu.ifsp.biblioteca.domain;
 
+import jakarta.persistence.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
+@Table(name = "livro")
 public class Livro {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false, unique = true, length = 20)
     private String isbn;
+
+    @Column(nullable = false, length = 200)
     private String titulo;
+
+    @Column(name = "ano_publicacao")
     private Integer anoPublicacao;
-    private List<Exemplar> listaDeExeplares;
+
+    @OneToMany(mappedBy = "livro", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<Exemplar> listaDeExemplares = new ArrayList<>();
+
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(name = "livro_autor", joinColumns = @JoinColumn(name = "livro_id"), inverseJoinColumns = @JoinColumn(name = "autor_id"))
     private List<Autor> autores = new ArrayList<>();
 
-    public Livro(String isbn, String titulo, Integer anoPublicacao){
+    public Livro(String isbn, String titulo, Integer anoPublicacao) {
         this.isbn = isbn;
         this.titulo = titulo;
         this.anoPublicacao = anoPublicacao;
-        this.listaDeExeplares = new ArrayList<>();
+        this.listaDeExemplares = new ArrayList<>();
+        this.autores = new ArrayList<>();
     }
+
+    public Livro(){}
 
     public Long getId() {
         return id;
     }
 
-    public String getIsbn(){
-        return isbn;
-    }
-
-    public String getTitulo(){
-        return titulo;
-    }
-
-    public Integer getAnoPublicacao(){
-        return anoPublicacao;
-    }
-
-    public List<Autor> getAutores(){
-        return this.autores;
-    }
-
-    public List<Exemplar> getExeplares(){
-        return this.listaDeExeplares;
-    }
-
-    public void setId(Long id){
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public void setIsbn(String isbn){
+    public String getIsbn() {
+        return isbn;
+    }
+
+    public void setIsbn(String isbn) {
         this.isbn = isbn;
     }
 
-    public void setTitulo(String titulo){
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public void setTitulo(String titulo) {
         this.titulo = titulo;
     }
 
-    public void setAnoPublicacao(Integer anoPublicacao){
+    public Integer getAnoPublicacao() {
+        return anoPublicacao;
+    }
+
+    public void setAnoPublicacao(Integer anoPublicacao) {
         this.anoPublicacao = anoPublicacao;
     }
 
-    public void adicionarExemplar(Exemplar item){
-        this.listaDeExeplares.add(item);
+    public void adicionarExemplar(Exemplar item) {
+        this.listaDeExemplares.add(item);
     }
 
-    public void adicionarAutor(Autor autor){
+    public void adicionarAutor(Autor autor) {
         this.autores.add(autor);
+    }
+
+    public List<Autor> getAutores() {
+        return this.autores;
+    }
+
+    public List<Exemplar> getExemplares() {
+        return this.listaDeExemplares;
     }
 
     @Override
