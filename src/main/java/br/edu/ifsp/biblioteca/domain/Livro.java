@@ -8,6 +8,7 @@ import java.util.List;
 @Entity
 @Table(name = "livro")
 public class Livro {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -21,12 +22,25 @@ public class Livro {
     @Column(name = "ano_publicacao")
     private Integer anoPublicacao;
 
-    @OneToMany(mappedBy = "livro", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(
+        mappedBy = "livro",
+        cascade = CascadeType.ALL,
+        orphanRemoval = true,
+        fetch = FetchType.LAZY
+    )
     private List<Exemplar> listaDeExemplares = new ArrayList<>();
 
+    // ORM = Object Relational Mapping
+
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(name = "livro_autor", joinColumns = @JoinColumn(name = "livro_id"), inverseJoinColumns = @JoinColumn(name = "autor_id"))
+    @JoinTable(
+        name = "livro_autor",
+        joinColumns = @JoinColumn(name = "livro_id"),
+        inverseJoinColumns = @JoinColumn(name = "autor_id")
+    )
     private List<Autor> autores = new ArrayList<>();
+
+    public Livro() {}
 
     public Livro(String isbn, String titulo, Integer anoPublicacao) {
         this.isbn = isbn;
@@ -35,8 +49,6 @@ public class Livro {
         this.listaDeExemplares = new ArrayList<>();
         this.autores = new ArrayList<>();
     }
-
-    public Livro(){}
 
     public Long getId() {
         return id;
@@ -84,6 +96,18 @@ public class Livro {
 
     public List<Exemplar> getExemplares() {
         return this.listaDeExemplares;
+    }
+
+    public long quantidadeDisponivel(){
+        long disponiveis = 0;
+
+        for (Exemplar exemplar : this.getExemplares()){
+            if (exemplar.estaDisponivel()){
+                disponiveis += 1;
+            }
+        }
+
+        return disponiveis;
     }
 
     @Override
